@@ -9,8 +9,8 @@
             this.video = video;
         }
 
-        public async Task Invoke() 
-        { 
+        public async Task Invoke()
+        {
             await video.Upload();
         }
 

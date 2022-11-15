@@ -10,7 +10,7 @@
         }
 
         public async Task Invoke()
-        { 
+        {
             await video.GetInfo();
         }
 

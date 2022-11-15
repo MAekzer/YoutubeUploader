@@ -48,7 +48,7 @@ namespace YoutubeUploader
                         break;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Controller.HandleError(e);
             }

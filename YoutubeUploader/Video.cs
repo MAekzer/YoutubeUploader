@@ -1,8 +1,4 @@
-﻿
-
-using System.Diagnostics.CodeAnalysis;
-using YoutubeExplode;
-using YoutubeExplode.Converter;
+﻿using YoutubeExplode;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
