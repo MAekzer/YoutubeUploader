@@ -2,7 +2,7 @@
 {
     interface IAction
     {
-        void Invoke();
+        Task Invoke();
         void Undo();
     }
 }

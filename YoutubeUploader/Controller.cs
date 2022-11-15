@@ -9,7 +9,10 @@
             this.action = action;
         }
 
-        public void Invoke() { action.Invoke(); }
+        public async Task Invoke()
+        { 
+            await action.Invoke();
+        }
 
         public void Undo() { action.Undo(); }
 

@@ -1,15 +1,18 @@
-﻿namespace YoutubeUploader
+﻿namespace YoutubeUploader.Services
 {
     class Informer : IAction
     {
-        private Video video;
+        private readonly Video video;
 
         public Informer(Video video)
         {
             this.video = video;
         }
 
-        public void Invoke() { video.GetInfo(); }
+        public async Task Invoke()
+        { 
+            await video.GetInfo();
+        }
 
         public void Undo() { video.ClearInfo(); }
     }

@@ -1,10 +1,11 @@
 ﻿using YoutubeExplode;
+using YoutubeUploader.Services;
 
 namespace YoutubeUploader
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string url = String.Empty;
             string option = String.Empty;
@@ -19,7 +20,7 @@ namespace YoutubeUploader
                 url = args[0];
 
             Video video = new(new YoutubeClient(), url);
-            Controller controller = new Controller();
+            Controller controller = new();
 
             //Выбираем нужную функцию
             if (args.Length < 2)
@@ -36,11 +37,11 @@ namespace YoutubeUploader
                 {
                     case "1":
                         controller.SetAction(new Informer(video));
-                        controller.Invoke();
+                        await controller.Invoke();
                         break;
                     case "2":
                         controller.SetAction(new Uploader(video));
-                        controller.Invoke();
+                        await controller.Invoke();
                         break;
                     default:
                         Console.WriteLine("Ошибка: требуется ввести 1 или 2 для выбора функции");

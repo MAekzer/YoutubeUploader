@@ -1,4 +1,4 @@
-﻿namespace YoutubeUploader
+﻿namespace YoutubeUploader.Services
 {
     class Uploader : IAction
     {
@@ -9,7 +9,10 @@
             this.video = video;
         }
 
-        public void Invoke() { video.Upload(); }
+        public async Task Invoke() 
+        { 
+            await video.Upload();
+        }
 
         public void Undo() { video.Delete(); }
     }

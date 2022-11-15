@@ -3,6 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeUploader
@@ -18,11 +19,11 @@ namespace YoutubeUploader
             Url = url;
         }
 
-        public void GetInfo()
+        public async Task GetInfo()
         {
             Console.Clear();
-            var desc = client.Videos.GetAsync(Url).Result;
-            Console.WriteLine($"Название видео: {desc.Title}\n\n" +
+            var desc = await client.Videos.GetAsync(Url);
+            Console.WriteLine($"\nНазвание видео: {desc.Title}\n\n" +
                 $"Автор: {desc.Author}\n\n" +
                 $"Длительность: {desc.Duration}\n\n" +
                 $"Дата создания: {desc.UploadDate.Date.ToShortDateString()}\n\n" +
@@ -34,12 +35,25 @@ namespace YoutubeUploader
             Console.Clear();
         }
 
-        public async void Upload()
+        public async Task Upload()
         {
+            var videoId = VideoId.Parse(Url);
             var streamManifest = await client.Videos.Streams.GetManifestAsync(Url);
-            var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
+            var streamInfo = streamManifest.GetMuxedStreams().TryGetWithHighestVideoQuality();
 
+            if (streamInfo is null)
+            {
+                Console.Error.WriteLine("This video has no muxed streams.");
+                return;
+            }
+
+            Console.WriteLine($"\nИдет загрузка: {streamInfo.Container.Name}");
+            var fileName = $"{videoId}.{streamInfo.Container.Name}";
             await client.Videos.Streams.DownloadAsync(streamInfo, $"video.{streamInfo.Container}");
+
+            Console.WriteLine();
+            if (Task.CompletedTask.IsCompletedSuccessfully)
+                Console.WriteLine($"Загрузка успешно завершена в файл {fileName}");
         }
 
         public void Delete()
